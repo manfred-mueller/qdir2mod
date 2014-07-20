@@ -156,18 +156,23 @@ void MainWindow::on_toolButtonOutputFile_clicked()
 }
 
 void MainWindow::on_pushButtonCreate_pressed() {
-	if (listWidget->count() == 0)
-	{
+	int t = (QThread::idealThreadCount ());
+	QString coreThreads = QString::number(t);
+	int mt = threadBox ->value();	
+	QString maxThreads = QString::number(mt);
+
+	if (listWidget->count() == 0) {
 		QMessageBox::warning(this, tr("Warning"), tr("Select input folder(s) first!"));
 		return;
-	}
-	
-	if (fileSave == "")
-	{
+	} else if (fileSave == "") {
 		QMessageBox::critical(this, tr("Error"), tr("Select destination file to save to!"));
 		return;
-	}
+	} else if ( mt > t) {
+		QMessageBox::critical(this, tr("Warning"), (tr("Thread count <font color=\"red\"><b>") + maxThreads + tr("</b></font> is too high!<br><br>It is highly recommended<br>to decrease this value!<br><br><b>Available cores: <font color=\"green\">") + coreThreads) + "</font></b>");
+		return ;
+	} else {
         tray->showMessage(tr("Modulizing process"), tr("Please be patient while modulizing..."), QSystemTrayIcon::Information, 5000);
+	}
 }
 
 void MainWindow::on_pushButtonCreate_released()
@@ -196,14 +201,6 @@ void MainWindow::on_pushButtonCreate_released()
 	script += " -b ";
 	script += blocksize;
 	script += "K -Xbcj x86";
-	int t = (QThread::idealThreadCount ());
-	QString coreThreads = QString::number(t);
-	int mt = threadBox ->value();	
-	QString maxThreads = QString::number(mt);
-	if ( mt > t) {
-		QMessageBox::critical(this, tr("Warning"), (tr("Thread count <font color=\"red\"><b>") + maxThreads + tr("</b></font> too high!<br><br><b>available cores: <font color=\"green\">") + coreThreads) + "</font></b>");
-		return;
-	} 
 	if (appendBox->isChecked() == false) {
 	script += " -noappend";
 	}
@@ -211,6 +208,8 @@ void MainWindow::on_pushButtonCreate_released()
 	script += " -keep-as-directory";
 	}
 	script += " -processors ";
+	int mt = threadBox ->value();	
+	QString maxThreads = QString::number(mt);
 	script += maxThreads;
 	script += " -no-progress";
 

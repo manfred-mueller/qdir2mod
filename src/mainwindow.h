@@ -11,6 +11,7 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 		void initWindow();
 		QStringList bStringList;
 		QStringList files;
+		QString maxThreads;
 		QString folder;
 		QFile file;
 		QComboBox blocksizeBox;
