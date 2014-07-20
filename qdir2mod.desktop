@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Qdir2mod 
-Exec=Qdir2mod
+Exec=qdir2mod
 Icon=/usr/share/pixmaps/qdir2mod.png
 Terminal=false
 Encoding=UTF-8
