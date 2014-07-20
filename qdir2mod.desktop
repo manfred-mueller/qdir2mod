@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Qdir2mod 
+Exec=Qdir2mod
+Icon=/usr/share/pixmaps/qdir2mod.png
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=System;Development;
+MimeType=indode/directory

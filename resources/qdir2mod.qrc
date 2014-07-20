@@ -1,0 +1,17 @@
+<RCC>
+	<qresource>
+		<file>fluxflux.png</file>
+		<file>icons/qdir2mod.png</file>
+		<file>icons/distributor.png</file>
+		<file>icons/help.png</file>
+		<file>icons/add.png</file>
+		<file>icons/create.png</file>
+		<file>icons/cancel.png</file>
+		<file>icons/close.png</file>
+		<file>icons/exit.png</file>
+		<file>icons/about.png</file>
+		<file>icons/save.png</file>
+		<file>translations/qt_de.qm</file>
+		<file>translations/qdir2mod_de.qm</file>
+	</qresource>
+</RCC>
