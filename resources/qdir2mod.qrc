@@ -2,7 +2,6 @@
 	<qresource>
 		<file>fluxflux.png</file>
 		<file>icons/qdir2mod.png</file>
-		<file>icons/distributor.png</file>
 		<file>icons/help.png</file>
 		<file>icons/add.png</file>
 		<file>icons/create.png</file>

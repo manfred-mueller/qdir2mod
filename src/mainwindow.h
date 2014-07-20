@@ -9,9 +9,11 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 		MainWindow(QWidget *parent = 0);
 		
 		void initWindow();
+		QStringList bStringList;
 		QStringList files;
 		QString folder;
 		QFile file;
+		QComboBox blocksizeBox;
 	
 	public slots:
 		void on_toolButtonInputFile_clicked();
@@ -24,6 +26,11 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 		void on_actionAbout_triggered();
 
 	private:
+		QString logo;
+		QString threads;
+		QString blocks;
+		QString append;
+		QString hints;
 		QString version;
 		QString fileSave;
                 QSystemTrayIcon * tray;

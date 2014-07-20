@@ -28,41 +28,93 @@ void MainWindow::initWindow()
 	for (int i = 1; i < args.count(); ++i)
 		listWidget->addItem(args[i]);
 	}
-    	tray = new QSystemTrayIcon(this);
-    	tray->setIcon(QIcon(":/icons/qdir2mod.png"));
-    	tray->show();
-	QPixmap distributorImg ("/usr/share/gdir2mod/distributor.png");
-	QPixmap defaultImg (":/icons/distributor.png");
-	QFile file("/usr/share/gdir2mod/distributor.png");
-	if (file.exists()) {
-		distributorLabel->setPixmap(distributorImg);
-	} else {
-		distributorLabel->setPixmap(defaultImg);
-	}
-	lineEditStartFolder->setText(QDir::homePath());
+	QFile configFile("/etc/qdir2mod.cfg");
 
+	if (configFile.exists())
+	{
+	    if (configFile.open(QFile::ReadOnly))
+	    {
+	        while (!configFile.atEnd())
+	        {
+	            QString line = configFile.readLine(500).trimmed();
+	            if (line.startsWith("LOGO="))
+	            {
+	                logo += line.remove(0, 5);
+	            }
+	            if (line.startsWith("THREADS="))
+	            {
+	                threads += line.remove(0, 8);
+			threadBox->setValue(threads.toInt());
+	            }
+	            if (line.startsWith("BLOCKS="))
+	            {
+	                blocks += line.remove(0, 7);
+			QString bString(blocks);  
+			QStringList bStringList = bString.split(",");
+		        blockSizeBox->clear();
+		        blockSizeBox->addItems(bStringList);
+		    } else {
+			QStringList bStringList;
+			bStringList.append("512");
+			bStringList.append("128");
+			bStringList.append("256");
+			bStringList.append("1024");
+		        blockSizeBox->clear();
+		        blockSizeBox->addItems(bStringList);
+		    }
+	            if (line.startsWith("APPEND="))
+	            {
+	                append += line.remove(0, 7);
+			if ((append.toInt() == 1)) {
+				appendBox->setChecked(1);
+			}
+	            }
+	            if (line.startsWith("HINTS="))
+	            {
+	                hints += line.remove(0, 6);
+			if ((hints.toInt() == 1)) {
+				hintBox->setChecked(1);
+			}
+	            }
+	        }
+	         configFile.close();
+	    }
+	}
+     	
+	tray = new QSystemTrayIcon(this);
+	QFile file(logo);
+	if (file.exists()) {
+		this->setWindowIcon(QIcon(logo));
+		tray->setIcon(QIcon(logo));
+		distributorLabel->setPixmap(logo);
+	} else {
+    		tray->setIcon(QIcon(":/icons/qdir2mod.png"));
+    		distributorLabel->setPixmap(QPixmap(":/icons/qdir2mod.png"));
+	}
+    	tray->show();
+	lineEditStartFolder->setText(QDir::homePath());
 }
 
 void MainWindow:: on_toolButtonInputFile_clicked()
 {
-    QString startDir = lineEditStartFolder->text();
-    QFileDialog* folderDialog = new QFileDialog(this);
-    folderDialog->setDirectory(lineEditStartFolder->text());
-    folderDialog->setFileMode(QFileDialog::Directory);
-    folderDialog->setOption(QFileDialog::DontUseNativeDialog, true);
-    folderDialog->setOption(QFileDialog::ShowDirsOnly, true);
-    folderDialog->setOption(QFileDialog::DontResolveSymlinks, true);
-    QListView *folderList = folderDialog->findChild<QListView*>("listView");
-    if (folderList) {
-    folderList->setSelectionMode(QAbstractItemView::MultiSelection);
-    }
-    QTreeView *folderTree = folderDialog->findChild<QTreeView*>();
-    if (folderTree) {
-    folderTree->setSelectionMode(QAbstractItemView::MultiSelection);
-    }
-     
-    folderDialog->exec();
-    QStringList folders = folderDialog->selectedFiles();
+	QString startDir = lineEditStartFolder->text();
+	QFileDialog* folderDialog = new QFileDialog(this);
+	folderDialog->setDirectory(lineEditStartFolder->text());
+	folderDialog->setFileMode(QFileDialog::Directory);
+	folderDialog->setOption(QFileDialog::DontUseNativeDialog, true);
+	folderDialog->setOption(QFileDialog::ShowDirsOnly, true);
+	folderDialog->setOption(QFileDialog::DontResolveSymlinks, true);
+	QListView *folderList = folderDialog->findChild<QListView*>("listView");
+	if (folderList) {
+	folderList->setSelectionMode(QAbstractItemView::MultiSelection);
+	}
+	QTreeView *folderTree = folderDialog->findChild<QTreeView*>();
+	if (folderTree) {
+	folderTree->setSelectionMode(QAbstractItemView::MultiSelection);
+	}
+
+	folderDialog->exec();
+	QStringList folders = folderDialog->selectedFiles();
 	if (!folders.isEmpty())
 	    listWidget->addItems(folders);
 }
