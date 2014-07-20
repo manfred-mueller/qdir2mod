@@ -69,9 +69,9 @@ void MainWindow::initWindow()
 				appendBox->setChecked(1);
 			}
 	            }
-	            if (line.startsWith("HINTS="))
+	            if (line.startsWith("NOHINTS="))
 	            {
-	                hints += line.remove(0, 6);
+	                hints += line.remove(0, 8);
 			if ((hints.toInt() == 1)) {
 				hintBox->setChecked(1);
 			}

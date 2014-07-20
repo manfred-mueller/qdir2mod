@@ -1,9 +1,4 @@
-CONFIG +=   warn_on \
-  thread \
-  exceptions \
-  stl \
-  qt \
-  release
+CONFIG += release
 DESTDIR +=   bin
 FORMS +=   ui/mainwindow.ui
 HEADERS +=   src/mainwindow.h
@@ -19,16 +14,22 @@ unix {
   isEmpty(PREFIX) {
     PREFIX = /usr
   }
+  isEmpty(SYSCONFDIR) {
+    SYSCONFDIR = /etc
+  }
   BINDIR = $$PREFIX/bin
   DATADIR =$$PREFIX/share
 
-  DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
+  DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\ "PKGSYSCONFDIR=\\\"$$PKGSYSCONFDIRDIR\\\"
 
   #MAKE INSTALL
 
-  INSTALLS += target desktop icon
+  INSTALLS += target desktop icon sysconf
 
   target.path =$$BINDIR
+
+  sysconf.path = $$SYSCONFDIR
+  sysconf.files += $${TARGET}.cfg
 
   desktop.path = $$DATADIR/applications
   desktop.files += $${TARGET}.desktop
